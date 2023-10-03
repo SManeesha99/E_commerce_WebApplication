@@ -1,16 +1,26 @@
 <?php
+// Check if session is not already started, then start it.
 if (session_id() == '' || !isset($_SESSION)) {
   session_start();
 }
 
+// Check if $_SESSION["type"] is set and not empty
+if (!isset($_SESSION["type"]) || empty($_SESSION["type"])) {
+  header("location:index.php");
+  exit(); // Add an exit to prevent further execution
+}
+
 if ($_SESSION["type"] != "admin") {
   header("location:index.php");
+  exit(); // Add an exit to prevent further execution
 }
 
 include 'config.php';
 
 $_SESSION["products_id"] = array();
-$_SESSION["products_id"] = $_REQUEST['quantity'];
+if (isset($_REQUEST['quantity'])) {
+  $_SESSION["products_id"] = $_REQUEST['quantity'];
+}
 
 $result = $mysqli->query("SELECT * FROM products ORDER BY id asc");
 $i = 0;
@@ -41,4 +51,5 @@ if ($result) {
 }
 
 header("location:success.php");
+exit(); // Add an exit to prevent further execution
 ?>
