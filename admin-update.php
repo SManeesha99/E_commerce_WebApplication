@@ -1,11 +1,13 @@
 <?php
-// Check if session is not already started, then start it.
+// Check if session is not already started, then start it
 if (session_id() == '' || !isset($_SESSION)) {
   session_start();
 }
 
 // Check if $_SESSION["type"] is set and not empty
-if (!isset($_SESSION["type"]) || empty($_SESSION["type"])) {
+if (isset($_SESSION["type"]) && $_SESSION["type"] !== "") {
+  // The session variable "type" is set and not empty
+} else {
   header("location:index.php");
   exit(); // Add an exit to prevent further execution
 }
